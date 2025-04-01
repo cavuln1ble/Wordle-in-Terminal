@@ -1,41 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
+#include <time.h>
 
-typedef struct 
+char* words_init()
 {
-    char* word[5];
-} Word;
-
-Word* words_init()
-{
-    FILE* word_file = fopen("C:\\Users\\user\\OneDrive\\Coding\\C and CPP\\C_projects\\Wordle Terminal\\dictionary.csv", "r");
-    if (word_file == NULL) {exit(1);} 
-
-    unsigned int count = 0;
-    size_t size = 175396;
-    Word* valid_words[size];
-
-    for (size_t i = 0; i<size; i++)
-    {
-        char tmp = fscanf(word_file, "%s\n", tmp);
-        if (strlen(&tmp) == 5) {strcpy(valid_words[count++]->word, &tmp);}
-        continue;
+    FILE* word_file = fopen("validwords.csv", "r");
+    if (!word_file) {return NULL;}
+    
+    srand(time(NULL));
+    int choice = rand();
+    char* validwords = malloc(sizeof(word_file) / (sizeof(char) * 6) + 1); 
+    char* format[] = "%s\0\n";
+    for (int i = 0; i < choice; i++) {
+        validwords[i] = fscanf(word_file, format);
     }
-
-    Word* words = malloc(sizeof(Word) * count);
-    if (words == NULL) {exit(1);}
-
-    for (size_t j = 0; j<count; j++)
-    {
-        memcpy(words[j].word, valid_words[j]->word, sizeof(Word));
-    }
-
-    return words;
+    char* word[5] = validwords[choice-1];
+    free(validwords);
+    return word;
 }
 
 int main()
 {
-    Word* words = words_init();
+    char* word = words_init();
+    fclose(word);
     return 0;
 }
